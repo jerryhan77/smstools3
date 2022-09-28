@@ -793,7 +793,7 @@ int readcfg_device(int device, char *device_name)
             if (!strcasecmp(value, "ascii"))
               startuperror("Ascii mode is not supported anymore.\n");
 
-            if (strcasecmp(value, "old") && strcasecmp(value, "new"))
+            if (strcasecmp(value, "old") && strcasecmp(value, "new") && strcasecmp(value, "cdma"))
               startuperror("Invalid mode=%s.\n", value);
             else
               strcpy2(NEWDEVICE.mode, value);

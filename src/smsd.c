@@ -4127,11 +4127,16 @@ int send_part(char* from, char* to, char* text, int textlen, int alphabet, int w
   }
 
   if (!text_is_pdu)
-    make_pdu(to, text, textlen, alphabet, flash, report, with_udh, udh_data, DEVICE.mode, pdu,
+    if (strcasecmp(DEVICE.mode,"cdma")==0)
+      make_cdma_pdu(to, text, textlen, pdu);
+    else
+      make_pdu(to, text, textlen, alphabet, flash, report, with_udh, udh_data, DEVICE.mode, pdu,
              validity, replace_msg, system_msg, to_type, smsc, message_reference, reject_duplicates, reply_path, sms_class,
              tp_dcs, ping);
 
   if (strcasecmp(DEVICE.mode,"old")==0)
+    sprintf(command,"AT+CMGS=%i\r",(int)strlen(pdu)/2);
+  else if (strcasecmp(DEVICE.mode,"cdma")==0)
     sprintf(command,"AT+CMGS=%i\r",(int)strlen(pdu)/2);
   else
     sprintf(command,"AT%s+CMGS=%i\r", (DEVICE.verify_pdu)? "E1" : "", (int)strlen(pdu)/2-1); // 3.1.4: verify_pdu
