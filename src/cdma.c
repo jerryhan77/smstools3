@@ -44,7 +44,10 @@ void make_cdma_pdu(
 )
 {
     char cmd[BUFSIZE];
+    char msg[BUFSIZE];
 
-    sprintf(cmd, "%s %s %s \"%s\"", NODE, SCRIPT, number, message);
+    memset(msg,0,sizeof(msg));
+    strncpy(msg, message, messagelen);
+    sprintf(cmd, "%s %s %s \"%s\"", NODE, SCRIPT, number, msg);
     run_external(cmd, pdu);
 }
